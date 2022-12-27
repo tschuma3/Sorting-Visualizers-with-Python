@@ -42,15 +42,14 @@ def quick_Sort(data, low, high, draw_Data, timer):
     #Finds the pivot
     pi = partition(data, low, high, draw_Data, timer)
 
-    #Generates green color when lines are sorted
-    draw_Data(data, ['Green' for x in range(len(data))])
-
-
     #Works the left side
     quick_Sort(data, low, pi - 1, draw_Data, timer)
     
     #Works the right side
     quick_Sort(data, pi + 1, high, draw_Data, timer)
+
+    #Generates green color when lines are sorted
+    #draw_Data(data, ['Green' for x in range(len(data))])
 
 def partition(data, low, high, draw_Data, timer):
 
@@ -77,7 +76,7 @@ def partition(data, low, high, draw_Data, timer):
     #Swaps the pivot element with the high
     data[i + 1], data[high] = data[high], data[i + 1]
     #When swapped then display green, otherwise red
-    draw_Data(data, ['Green' if x == high + 1 else 'Red' for x in range(len(data))])
+    draw_Data(data, ['Green' if x == i + 1 + 1 else 'Red' for x in range(len(data))])
     time.sleep(timer)
 
     return i + 1
@@ -132,8 +131,10 @@ def draw_Data(data, color_List):
 #Function that initiates the sorting process
 def start_Algorithm():
     global data
-    bubble_Sort(data, draw_Data, speedbar.get())
-    quick_Sort(data, 0, len(data) - 1, draw_Data, speedbar.get())
+    low = 0
+    high = len(data)
+    #bubble_Sort(data, draw_Data, speedbar.get())
+    quick_Sort(data, low, high - 1, draw_Data, speedbar.get())
 
 #Creating the UI
 #The window
