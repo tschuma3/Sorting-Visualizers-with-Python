@@ -36,6 +36,52 @@ def bubble_Sort(data, draw_Data, timer):
     #Generates green color when lines are sorted
     draw_Data(data, ['Green' for x in range(len(data))])
 
+#Quick Sort Algorithm
+def quick_Sort(data, low, high, draw_Data, timer):
+
+    #Finds the pivot
+    pi = partition(data, low, high, draw_Data, timer)
+
+    #Generates green color when lines are sorted
+    draw_Data(data, ['Green' for x in range(len(data))])
+
+
+    #Works the left side
+    quick_Sort(data, low, pi - 1, draw_Data, timer)
+    
+    #Works the right side
+    quick_Sort(data, pi + 1, high, draw_Data, timer)
+
+def partition(data, low, high, draw_Data, timer):
+
+    #Sets the pivot to the last element
+    pivot = data[high]
+
+    #Pointer to the greater element
+    i = low - 1
+
+    #Iterates through the data and checks j to the pivot
+    for j in range(low, high):
+        if data[j] <= pivot:
+
+            #Greater element pointer
+            i += 1
+
+            #Swaps j and i
+            data[j], data[i] = data[i], data[j]
+
+            #When swapped then display green, otherwise red
+            draw_Data(data, ['Green' if x == j + 1 else 'Red' for x in range(len(data))])
+            time.sleep(timer)
+    
+    #Swaps the pivot element with the high
+    data[i + 1], data[high] = data[high], data[i + 1]
+    #When swapped then display green, otherwise red
+    draw_Data(data, ['Green' if x == high + 1 else 'Red' for x in range(len(data))])
+    time.sleep(timer)
+
+    return i + 1
+
 #Generates the values
 def generate_Values():
     global data
@@ -87,6 +133,7 @@ def draw_Data(data, color_List):
 def start_Algorithm():
     global data
     bubble_Sort(data, draw_Data, speedbar.get())
+    quick_Sort(data, 0, len(data) - 1, draw_Data, speedbar.get())
 
 #Creating the UI
 #The window
@@ -102,7 +149,7 @@ canvas.grid(row=1, column=0, padx=10, pady=5)
 Label(window, text="Algorithm", bg="Grey").grid(row=0, column=0, padx=5, pady=5, sticky=W)
 
 #Algorithm to show the name of the sorting algorithm
-alg_Menu = ttk.Combobox(window, textvariable=select_Alg, values=["Bubble Sort"])
+alg_Menu = ttk.Combobox(window, textvariable=select_Alg, values=["Bubble Sort", "Quick Sort"])
 alg_Menu.grid(row=0, column=1, padx=5, pady=5)
 alg_Menu.current(0)
 

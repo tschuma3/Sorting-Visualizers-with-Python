@@ -34,10 +34,42 @@ def bubble_Sort(height):
             if height[j] > height[j + 1]:
                 
                 #Swaps the heights
-                temp = height[j]
-                height[j] = height[j + 1]
-                height[j + 1] = temp
+                height[j], height[j + 1] = height[j + 1], height[j]
 
+def quick_Sort(heigths, low, high):
+
+    #Finds the pivot 
+    pi = partition(heights, low, high)
+
+    #Sorts on the left side
+    quick_Sort(heigths, low, pi - 1)
+
+    #Sorts on the right side
+    quick_Sort(heigths, pi + 1, high)
+    
+def partition(heights, low, high):
+    
+    #Creates a pivot
+    pivot = heights[high]
+
+    #Pointer to greater element
+    i = low - 1
+
+    #Iterates through the heights and checks j with the pivot
+    for j in range(low, high):
+        if heights[j] <= pivot:
+
+            #Sets i to the greater element
+            i += 1
+
+            #Swaps the elements
+            heights[i], heights[j] = heights[j], heights[i]
+    
+    #Swaps teh pivot
+    heights[i + 1], heights[high] = heights[high], heights[i + 1]
+
+    #Returns the position
+    return i + 1
 
 #Function to show the heights of the given list
 def show(height):
