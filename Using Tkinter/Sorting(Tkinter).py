@@ -136,6 +136,10 @@ def start_Algorithm():
     #bubble_Sort(data, draw_Data, speedbar.get())
     quick_Sort(data, low, high - 1, draw_Data, speedbar.get())
 
+#Quits out of the program
+def stop():
+    root.quit()
+
 #Creating the UI
 #The window
 window = Frame(root, width=600, height=200, bg="Grey")
@@ -154,8 +158,9 @@ alg_Menu = ttk.Combobox(window, textvariable=select_Alg, values=["Bubble Sort", 
 alg_Menu.grid(row=0, column=1, padx=5, pady=5)
 alg_Menu.current(0)
 
-#Creating the start button
+#Creating the start and stop button
 Button(window, text="Start", bg="Blue", command=start_Algorithm).grid(row=1, column=3, padx=5, pady=5)
+Button(window, text="Stop", bg="Red", command=stop).grid(row=1, column=3, padx=5, pady=5)
 
 #Creating the speed bar using scale
 speedbar = Scale(window, from_=0.10, to=2.0, length=100, digits=2,
@@ -179,7 +184,7 @@ max_Entry = Scale(window, from_=10, to=250, resolution=1,
 max_Entry.grid(row=1, column=2, padx=5, pady=5)
 
 #Creating the generate button
-Button(window, text="Generate", bg="Red", command=generate_Values).grid(row=0, column=3, padx=5, pady=5)
+Button(window, text="Generate", bg="Green", command=generate_Values).grid(row=0, column=3, padx=5, pady=5)
 
 #Stopping the main loop
 root.mainloop()
