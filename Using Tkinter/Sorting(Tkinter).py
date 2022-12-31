@@ -20,6 +20,10 @@ root.config(bg="Black")
 select_Alg = StringVar()
 data = []
 
+#region Sorting Algorithms
+
+#Yellow - Swapping Value
+#Grey - Default Value
 #Bubble Sort
 def bubble_Sort(data, draw_Data, timer):
 
@@ -32,11 +36,8 @@ def bubble_Sort(data, draw_Data, timer):
                 data[j], data[j + 1] = data[j + 1], data[j]
 
                 #When swapped then display green, otherwise red
-                draw_Data(data, ['Green' if x == j + 1 else 'Red' for x in range(len(data))])
+                draw_Data(data, ['Yellow' if x == j + 1 else 'Grey' for x in range(len(data))])
                 time.sleep(timer)
-
-    #Generates green color when lines are sorted
-    draw_Data(data, ['Green' for x in range(len(data))])
 
 #Quick Sort Algorithm
 def quick_Sort(data, low, high, draw_Data, timer):
@@ -118,6 +119,35 @@ def getColorArray(data_Len, low, high, i, curr_Index, is_Swaping = False):
     
     return color_Array
 
+#Blue - Low
+#Yellow - Searching Value
+#Grey - Default
+#Selection Sort
+def selection_Sort(data, low, high, draw_Data, timer):
+    for i in range(high):
+        low = i
+
+        #When swapped then display green, otherwise red
+        draw_Data(data, ['Blue' if x == low + 1 else 'Grey' for x in range(len(data))])
+        time.sleep(timer)
+
+        for j in range(i + 1, high):
+            if data[low] > data[j]:
+                low = j
+
+            draw_Data(data, ['Yellow' if x == j + 1 else 'Grey' for x in range(len(data))])
+            time.sleep(timer)
+
+        data[i], data[low] = data[low], data[i]
+
+        #When swapped then display green, otherwise red
+        draw_Data(data, ['Blue' if x == low + 1 else 'Grey' for x in range(len(data))])
+        time.sleep(timer)
+
+#endregion
+
+#region Vizualiztion
+
 #Generates the values
 def generate_Values():
     global data
@@ -178,7 +208,11 @@ def start_Algorithm():
         bubble_Sort(data, draw_Data, speedbar.get())
     elif alg_Menu.get() == 'Quick Sort':
         quick_Sort(data, low, high - 1, draw_Data, speedbar.get())
-        draw_Data(data, ['Green' for x in range(high)])
+    elif alg_Menu.get() == 'Selection Sort':
+        selection_Sort(data, low, high, draw_Data, speedbar.get())
+
+    #Color every bar green when done sorting
+    draw_Data(data, ['Green' for x in range(high)])
 
 #Quits out of the program
 def stop():
@@ -198,7 +232,7 @@ canvas.grid(row=1, column=0, padx=10, pady=5)
 Label(window, text="Algorithm", bg="Grey").grid(row=0, column=0, padx=5, pady=5, sticky=W)
 
 #Algorithm to show the name of the sorting algorithm
-alg_Menu = ttk.Combobox(window, textvariable=select_Alg, values=["Bubble Sort", "Quick Sort"])
+alg_Menu = ttk.Combobox(window, textvariable=select_Alg, values=["Bubble Sort", "Quick Sort", "Selection Sort"])
 alg_Menu.grid(row=0, column=1, padx=5, pady=5)
 alg_Menu.current(0)
 
@@ -232,3 +266,5 @@ Button(window, text="Generate", bg="Green", command=generate_Values).grid(row=0,
 
 #Stopping the main loop
 root.mainloop()
+
+#endregion
