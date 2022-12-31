@@ -1,6 +1,8 @@
 """
-Credit: https://www.geeksforgeeks.org/visualizing-bubble-sort-using-tkinter-in-python/?ref=rp
--- Used for the visualizer aspect
+Credit
+-- https://www.geeksforgeeks.org/visualizing-bubble-sort-using-tkinter-in-python/?ref=rp
+-- https://www.geeksforgeeks.org/visualizing-quick-sort-using-tkinter-in-python/?ref=rp
+~ Used for the visualizer aspect
 """
 
 import time
