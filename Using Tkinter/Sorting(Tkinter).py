@@ -13,7 +13,7 @@ root = Tk()
 root.title("Sort Visualizer")
 
 #Maximum window size
-root.maxsize(900, 600)
+root.maxsize(900, 800)
 root.config(bg="Black")
 select_Alg = StringVar()
 data = []
@@ -39,47 +39,82 @@ def bubble_Sort(data, draw_Data, timer):
 #Quick Sort Algorithm
 def quick_Sort(data, low, high, draw_Data, timer):
 
-    #Finds the pivot
-    pi = partition(data, low, high, draw_Data, timer)
+    if low <= high:
+        #Finds the pivot
+        pi = partition(data, low, high, draw_Data, timer)
 
-    #Works the left side
-    quick_Sort(data, low, pi - 1, draw_Data, timer)
-    
-    #Works the right side
-    quick_Sort(data, pi + 1, high, draw_Data, timer)
+        #Works the left side
+        quick_Sort(data, low, pi - 1, draw_Data, timer)
 
-    #Generates green color when lines are sorted
-    #draw_Data(data, ['Green' for x in range(len(data))])
+        #Works the right side
+        quick_Sort(data, pi + 1, high, draw_Data, timer)
 
 def partition(data, low, high, draw_Data, timer):
 
-    #Sets the pivot to the last element
+    #Pointer to the greater element
+    i = low
+
+    #Sets the pivot to the last element and boarder to low
     pivot = data[high]
 
-    #Pointer to the greater element
-    i = low - 1
+    #Draws the intended colors
+    draw_Data(data, getColorArray(len(data), low, high, i, i))
+    time.sleep(timer)
 
     #Iterates through the data and checks j to the pivot
     for j in range(low, high):
-        if data[j] <= pivot:
+        if data[j] < pivot:
 
-            #Greater element pointer
-            i += 1
+            #Draws the intended colors
+            draw_Data(data, getColorArray(len(data), low, high, i, j, True))
+            time.sleep(timer)
 
             #Swaps j and i
             data[j], data[i] = data[i], data[j]
+            #Greater element pointer
+            i += 1
 
-            #When swapped then display green, otherwise red
-            draw_Data(data, ['Green' if x == j + 1 else 'Red' for x in range(len(data))])
-            time.sleep(timer)
+        #Draws the intended colors
+        draw_Data(data, getColorArray(len(data), low, high, i, j))
+        time.sleep(timer)
     
-    #Swaps the pivot element with the high
-    data[i + 1], data[high] = data[high], data[i + 1]
-    #When swapped then display green, otherwise red
-    draw_Data(data, ['Green' if x == i + 1 + 1 else 'Red' for x in range(len(data))])
+    #Draws the intended colors
+    draw_Data(data, getColorArray(len(data), low, high, i, high, True))
     time.sleep(timer)
 
-    return i + 1
+    #Swaps the pivot element with the high
+    data[i], data[high] = data[high], data[i]
+
+    return i
+
+# Function to apply colors to bars while sorting:
+# Grey - Unsorted elements
+# Blue - Pivot point element
+# White - Sorted half/partition
+# Red - Starting pointer
+# Yellow - Ending pointer
+# Green - after all elements are sorted
+def getColorArray(data_Len, low, high, i, curr_Index, is_Swaping = False):
+    color_Array = []
+    for j in range(data_Len):
+        #Base color
+        if j >= low and j <= high:
+            color_Array.append('Grey')
+        else:
+            color_Array.append('White')
+
+        if j == low:
+            color_Array[j] = 'Blue'
+        elif j == i:
+            color_Array[j] = 'Red'
+        elif j == curr_Index:
+            color_Array[j] = 'Yellow'
+        
+        if is_Swaping:
+            if j == i or j == curr_Index:
+                color_Array[j] = 'Green'
+    
+    return color_Array
 
 #Generates the values
 def generate_Values():
@@ -104,8 +139,8 @@ def generate_Values():
 #Creating the canvas and bars
 def draw_Data(data, color_List):
     canvas.delete("all")
-    can_Height = 380
-    can_Width = 550
+    can_Height = 480
+    can_Width = 727
     x_Width = can_Width / len(data) + 1
     offset = 30
     spacing = 10
@@ -117,7 +152,7 @@ def draw_Data(data, color_List):
 
         #Top left corner
         x0 = i * x_Width + offset + spacing
-        y0 = can_Height - height * 340
+        y0 = can_Height - height * 450
 
         #Bottom right corner
         x1 = ((i + 1) * x_Width) + offset
@@ -133,8 +168,15 @@ def start_Algorithm():
     global data
     low = 0
     high = len(data)
-    #bubble_Sort(data, draw_Data, speedbar.get())
-    quick_Sort(data, low, high - 1, draw_Data, speedbar.get())
+
+    if not data:
+        return
+
+    if alg_Menu.get() == 'Bubble Sort':
+        bubble_Sort(data, draw_Data, speedbar.get())
+    elif alg_Menu.get() == 'Quick Sort':
+        quick_Sort(data, low, high - 1, draw_Data, speedbar.get())
+        draw_Data(data, ['Green' for x in range(high)])
 
 #Quits out of the program
 def stop():
@@ -142,11 +184,11 @@ def stop():
 
 #Creating the UI
 #The window
-window = Frame(root, width=600, height=200, bg="Grey")
+window = Frame(root, width=800, height=500, bg="Grey")
 window.grid(row=0, column=0, padx=10, pady=5)
 
 #The canvas
-canvas = Canvas(root, width=600, height=380, bg="Grey")
+canvas = Canvas(root, width=800, height=500, bg="Grey")
 canvas.grid(row=1, column=0, padx=10, pady=5)
 
 #Creating a user interface in grid manner
@@ -159,17 +201,17 @@ alg_Menu.grid(row=0, column=1, padx=5, pady=5)
 alg_Menu.current(0)
 
 #Creating the start and stop button
-Button(window, text="Start", bg="Blue", command=start_Algorithm).grid(row=1, column=3, padx=5, pady=5)
-Button(window, text="Stop", bg="Red", command=stop).grid(row=1, column=3, padx=5, pady=5)
+Button(window, text="Start", bg="Blue", command=start_Algorithm).grid(row=2, column=0, padx=5, pady=5)
+Button(window, text="Stop", bg="Red", command=stop).grid(row=2, column=1, padx=5, pady=5)
 
 #Creating the speed bar using scale
-speedbar = Scale(window, from_=0.10, to=2.0, length=100, digits=2,
- resolution=0.2, orient=HORIZONTAL, label="Select Speed")
+speedbar = Scale(window, from_=0.0, to=0.5, length=100, digits=2,
+ resolution=0.01, orient=HORIZONTAL, label="Select Speed")
 speedbar.grid(row=0, column=2, padx=5, pady=5)
 
 #Second row components
 #size_Entry: scale to select the size of the data bars
-size_Entry = Scale(window, from_=3, to=75, resolution=1,
+size_Entry = Scale(window, from_=3, to=35, resolution=1,
                   orient=HORIZONTAL, label="Size")
 size_Entry.grid(row=1, column=0, padx=5, pady=5)
  
