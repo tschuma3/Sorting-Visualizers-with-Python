@@ -22,24 +22,60 @@ data = []
 
 #region Sorting Algorithms
 
-#Yellow - Swapping Value
-#Grey - Default Value
-#Bubble Sort
+#region Bubble Sort
 def bubble_Sort(data, draw_Data, timer):
 
     #Iterates through the data
     for i in range(len(data) - 1):
+
+        #draw_Data(data, get_Color_Array_Bubble(len(data), i, i))
+        #time.sleep(timer)
+
         for j in range(len(data) - i - 1):
+
+            #draw_Data(data, get_Color_Array_Bubble(len(data), i, j))
+            #time.sleep(timer)
 
             #When j is greater than j + 1, swap
             if data[j] > data [j + 1]:
-                data[j], data[j + 1] = data[j + 1], data[j]
 
-                #When swapped then display green, otherwise red
-                draw_Data(data, ['Yellow' if x == j + 1 else 'Grey' for x in range(len(data))])
+                draw_Data(data, get_Color_Array_Bubble(len(data), j, j + 1))
                 time.sleep(timer)
 
-#Quick Sort Algorithm
+                data[j], data[j + 1] = data[j + 1], data[j]
+
+                draw_Data(data, get_Color_Array_Bubble(len(data), j, j + 1, True))
+                time.sleep(timer)
+
+# Function to apply colors to bars while sorting:
+# Grey - Unsorted elements
+# Blue - Lowest element
+# White - Sorted elements
+# Yellow - Current index
+# Green - after all elements are sorted
+def get_Color_Array_Bubble(data_Len, curr_Index, curr_Index_1, is_Swaping = False):
+    color_Array = []
+    for j in range(data_Len):
+        #Base color
+        if j <= curr_Index and j <= data_Len:
+            color_Array.append('Grey')
+        else:
+            color_Array.append('White')
+
+        if j == curr_Index:
+            color_Array[j] = 'Yellow'
+        elif j == curr_Index_1:
+            color_Array[j] = 'Blue'
+        
+        if is_Swaping:
+            if j == curr_Index:
+                color_Array[j] = 'Green'
+    
+    return color_Array
+
+#endregion
+
+#region Quick Sort Algorithm
 def quick_Sort(data, low, high, draw_Data, timer):
 
     if low <= high:
@@ -61,7 +97,7 @@ def partition(data, low, high, draw_Data, timer):
     pivot = data[high]
 
     #Draws the intended colors
-    draw_Data(data, getColorArray(len(data), low, high, i, i))
+    draw_Data(data, get_Color_Array_Quick(len(data), low, high, i, i))
     time.sleep(timer)
 
     #Iterates through the data and checks j to the pivot
@@ -69,7 +105,7 @@ def partition(data, low, high, draw_Data, timer):
         if data[j] < pivot:
 
             #Draws the intended colors
-            draw_Data(data, getColorArray(len(data), low, high, i, j, True))
+            draw_Data(data, get_Color_Array_Quick(len(data), low, high, i, j, True))
             time.sleep(timer)
 
             #Swaps j and i
@@ -78,11 +114,11 @@ def partition(data, low, high, draw_Data, timer):
             i += 1
 
         #Draws the intended colors
-        draw_Data(data, getColorArray(len(data), low, high, i, j))
+        draw_Data(data, get_Color_Array_Quick(len(data), low, high, i, j))
         time.sleep(timer)
     
     #Draws the intended colors
-    draw_Data(data, getColorArray(len(data), low, high, i, high, True))
+    draw_Data(data, get_Color_Array_Quick(len(data), low, high, i, high, True))
     time.sleep(timer)
 
     #Swaps the pivot element with the high
@@ -97,7 +133,7 @@ def partition(data, low, high, draw_Data, timer):
 # Red - Starting pointer
 # Yellow - Ending pointer
 # Green - after all elements are sorted
-def getColorArray(data_Len, low, high, i, curr_Index, is_Swaping = False):
+def get_Color_Array_Quick(data_Len, low, high, i, curr_Index, is_Swaping = False):
     color_Array = []
     for j in range(data_Len):
         #Base color
@@ -119,30 +155,55 @@ def getColorArray(data_Len, low, high, i, curr_Index, is_Swaping = False):
     
     return color_Array
 
-#Blue - Low
-#Yellow - Searching Value
-#Grey - Default
-#Selection Sort
+#endregion
+
+#region Selection Sort
 def selection_Sort(data, low, high, draw_Data, timer):
     for i in range(high):
         low = i
 
-        #When swapped then display green, otherwise red
-        draw_Data(data, ['Blue' if x == low + 1 else 'Grey' for x in range(len(data))])
+        draw_Data(data, get_Color_Array_Selection(high, low, high, i))
         time.sleep(timer)
 
         for j in range(i + 1, high):
             if data[low] > data[j]:
                 low = j
 
-            draw_Data(data, ['Yellow' if x == j + 1 else 'Grey' for x in range(len(data))])
-            time.sleep(timer)
+                draw_Data(data, get_Color_Array_Selection(high, low, high, j))
+                time.sleep(timer)
 
         data[i], data[low] = data[low], data[i]
 
-        #When swapped then display green, otherwise red
-        draw_Data(data, ['Blue' if x == low + 1 else 'Grey' for x in range(len(data))])
+        draw_Data(data, get_Color_Array_Selection(high, low, high, i, True))
         time.sleep(timer)
+
+# Function to apply colors to bars while sorting:
+# Grey - Unsorted elements
+# Blue - Lowest element
+# White - Sorted elements
+# Yellow - Current index
+# Green - after all elements are sorted
+def get_Color_Array_Selection(data_Len, low, high, curr_Index, is_Swaping = False):
+    color_Array = []
+    for j in range(data_Len):
+        #Base color
+        if j >= low and j <= high:
+            color_Array.append('Grey')
+        else:
+            color_Array.append('White')
+
+        if j == low:
+            color_Array[j] = 'Blue'
+        elif j == curr_Index:
+            color_Array[j] = 'Yellow'
+        
+        if is_Swaping:
+            if j == curr_Index:
+                color_Array[j] = 'Green'
+    
+    return color_Array
+
+#endregion
 
 #endregion
 
