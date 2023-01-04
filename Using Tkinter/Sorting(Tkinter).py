@@ -48,9 +48,9 @@ def bubble_Sort(data, draw_Data, timer):
                 time.sleep(timer)
 
 # Function to apply colors to bars while sorting:
-# Grey - Unsorted elements
+# Grey - Searched elements
 # Blue - Lowest element
-# White - Sorted elements
+# White - Unsearched elements
 # Yellow - Current index
 # Green - after all elements are sorted
 def get_Color_Array_Bubble(data_Len, curr_Index, curr_Index_1, is_Swaping = False):
@@ -205,6 +205,80 @@ def get_Color_Array_Selection(data_Len, low, high, curr_Index, is_Swaping = Fals
 
 #endregion
 
+#region Heap Sort
+
+def heap_Sort(data, draw_Data, timer):
+    high = len(data)
+
+    #Building a maxheap
+    for i in range(high // 2 - 1, -1, -1):
+        heapify(data, high, i, draw_Data, timer)
+
+    #Extract the elements one by one
+    for i in range(high - 1, 0, -1):
+        data[i], data[0] = data[0], data[i]
+
+        draw_Data(data, get_Color_Array_Heap(len(data), data[0], i, True))
+        time.sleep(timer)
+
+        heapify(data, i, 0)
+
+def heapify(data, high, i, draw_Data, timer):
+    
+    #Initialize the largest as root
+    largest = i
+
+    left = 2 * i + 1
+    right = 2 * i + 2
+
+    #Checks the left child
+    if left< high and data[largest] < data[left]:
+        largest = left
+    
+    #Checks right child
+    if right < high and data[largest] < data[right]:
+        largest = right
+    
+    #Change root, when needed
+    if largest != i:
+
+        #Swap
+        data[i], data[largest] = data[largest], data[i]
+
+        draw_Data(data, get_Color_Array_Heap(len(data), i, largest, True))
+        time.sleep(timer)
+
+        #Heapify
+        heapify(data, high, largest)
+
+# Function to apply colors to bars while sorting:
+# Grey - Searched elements
+# Blue - Largest element
+# White - Unsearched elements
+# Yellow - i index
+# Green - after all elements are sorted
+def get_Color_Array_Heap(data_Len, i, largest, is_Swaping = False):
+    color_Array = []
+    for j in range(data_Len):
+        #Base color
+        if j <= i and j <= data_Len:
+            color_Array.append('Grey')
+        else:
+            color_Array.append('White')
+
+        if j == i:
+            color_Array[j] = 'Yellow'
+        elif j == largest:
+            color_Array[j] = 'Blue'
+        
+        if is_Swaping:
+            if j == curr_Index:
+                color_Array[j] = 'Green'
+    
+    return color_Array
+
+#endregion
+
 #endregion
 
 #region Vizualiztion
@@ -271,6 +345,8 @@ def start_Algorithm():
         quick_Sort(data, low, high - 1, draw_Data, speedbar.get())
     elif alg_Menu.get() == 'Selection Sort':
         selection_Sort(data, low, high, draw_Data, speedbar.get())
+    elif alg_Menu.get() == 'Heap Sort':
+        heap_Sort(data, draw_Data, speedbar.get())
 
     #Color every bar green when done sorting
     draw_Data(data, ['Green' for x in range(high)])
@@ -293,7 +369,7 @@ canvas.grid(row=1, column=0, padx=10, pady=5)
 Label(window, text="Algorithm", bg="Grey").grid(row=0, column=0, padx=5, pady=5, sticky=W)
 
 #Algorithm to show the name of the sorting algorithm
-alg_Menu = ttk.Combobox(window, textvariable=select_Alg, values=["Bubble Sort", "Quick Sort", "Selection Sort"])
+alg_Menu = ttk.Combobox(window, textvariable=select_Alg, values=["Bubble Sort", "Quick Sort", "Selection Sort", "Heap Sort"])
 alg_Menu.grid(row=0, column=1, padx=5, pady=5)
 alg_Menu.current(0)
 
