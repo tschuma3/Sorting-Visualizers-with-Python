@@ -1,8 +1,10 @@
 """
 Credit
+~ Used for the visualizer aspect
 -- https://www.geeksforgeeks.org/visualizing-bubble-sort-using-tkinter-in-python/?ref=rp
 -- https://www.geeksforgeeks.org/visualizing-quick-sort-using-tkinter-in-python/?ref=rp
-~ Used for the visualizer aspect
+
+~ This link has a variety of sorting algorithms
 -- https://www.geeksforgeeks.org/heap-sort/
 """
 
