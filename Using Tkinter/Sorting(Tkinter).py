@@ -3,6 +3,7 @@ Credit
 -- https://www.geeksforgeeks.org/visualizing-bubble-sort-using-tkinter-in-python/?ref=rp
 -- https://www.geeksforgeeks.org/visualizing-quick-sort-using-tkinter-in-python/?ref=rp
 ~ Used for the visualizer aspect
+-- https://www.geeksforgeeks.org/heap-sort/
 """
 
 import time
@@ -279,6 +280,81 @@ def get_Color_Array_Heap(data_Len, i, largest, is_Swaping = False):
 
 #endregion
 
+#region Redix / Counting Sort
+
+
+
+#endregion
+
+#region Merge Sort
+
+def merge_Sort(data, draw_Data, timer):
+
+    if len(data) > 1:
+
+        #Find the middle of the list
+        mid = len(data) // 2
+
+        draw_Data(data, get_Color_Array_Merge(len(data), mid))
+        time.sleep(timer)
+
+        #Get the left and right halves
+        left = data[:mid]
+        right = data[mid:]
+
+        #Left half sort
+        merge_Sort(left, draw_Data, timer)
+
+        #Right half sort
+        merge_Sort(right, draw_Data, timer)
+
+        i = j = k = 0
+
+        #Copy data to temp left[] and right[]
+        while i < len(left) and j < len(right):
+            if left[i] <= right[j]:
+                data[k] = left[i]
+                i += 1
+
+                draw_Data(data, get_Color_Array_Merge(len(data), i, True))
+                time.sleep(timer)
+
+            else:
+                data[k] = right[j]
+                j += 1
+
+                draw_Data(data, get_Color_Array_Merge(len(data), j, True))
+                time.sleep(timer)
+
+            k += 1
+
+            draw_Data(data, get_Color_Array_Merge(len(data), k, True))
+            time.sleep(timer)
+
+# Function to apply colors to bars while sorting:
+# Grey - Searched elements
+# Blue - Largest element
+# White - Unsearched elements
+# Yellow - i index
+# Green - after all elements are sorted
+def get_Color_Array_Merge(data_Len, i, is_Swaping = False):
+    color_Array = []
+    for j in range(data_Len):
+        #Base color
+        if j <= i and j <= data_Len:
+            color_Array.append('Grey')
+        else:
+            color_Array.append('White')
+
+        if j == i:
+            color_Array[j] = 'Yellow'
+        
+        if is_Swaping:
+            if j == i:
+                color_Array[j] = 'Green'
+    
+    return color_Array
+
 #endregion
 
 #region Vizualiztion
@@ -347,6 +423,8 @@ def start_Algorithm():
         selection_Sort(data, low, high, draw_Data, speedbar.get())
     elif alg_Menu.get() == 'Heap Sort':
         heap_Sort(data, draw_Data, speedbar.get())
+    elif alg_Menu.get() == 'Merge Sort':
+        merge_Sort(data, draw_Data, speedbar.get())
 
     #Color every bar green when done sorting
     draw_Data(data, ['Green' for x in range(high)])
@@ -369,7 +447,7 @@ canvas.grid(row=1, column=0, padx=10, pady=5)
 Label(window, text="Algorithm", bg="Grey").grid(row=0, column=0, padx=5, pady=5, sticky=W)
 
 #Algorithm to show the name of the sorting algorithm
-alg_Menu = ttk.Combobox(window, textvariable=select_Alg, values=["Bubble Sort", "Quick Sort", "Selection Sort", "Heap Sort"])
+alg_Menu = ttk.Combobox(window, textvariable=select_Alg, values=["Bubble Sort", "Quick Sort", "Selection Sort", "Heap Sort", "Merge Sort"])
 alg_Menu.grid(row=0, column=1, padx=5, pady=5)
 alg_Menu.current(0)
 
