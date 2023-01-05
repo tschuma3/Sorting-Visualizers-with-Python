@@ -1,6 +1,6 @@
 """
 Credit
-~ Used for the visualizer aspect
+~ Used for the visualizer aspectusing tkinter with flask
 -- https://www.geeksforgeeks.org/visualizing-bubble-sort-using-tkinter-in-python/?ref=rp
 -- https://www.geeksforgeeks.org/visualizing-quick-sort-using-tkinter-in-python/?ref=rp
 
